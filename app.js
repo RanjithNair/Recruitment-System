@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./api/auth0api');
+var githubapi = require('./api/oauth-github');
+var persistApi = require('./api/savecandidatedata');
 
 var app = express();
 
@@ -21,10 +23,17 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 app.use(express.static(path.join(__dirname, 'components')));
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
+app.use('/api',githubapi);
+app.use('/api', persistApi);
 
 
 

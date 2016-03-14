@@ -12,6 +12,7 @@ module.exports = React.createClass({
       <img src="https://i.cloudup.com/StzWWrY34s.png" />
       <h3>Infy NMC Recruitment System</h3>
       <a onClick={this.showLock} className="btn btn-primary btn-lg btn-login btn-block">Sign In</a>
+      <button type="button" class="btn btn-default" onClick={this.showGithubCard}>Admin Signin</button>
     </div>);
   }
 });

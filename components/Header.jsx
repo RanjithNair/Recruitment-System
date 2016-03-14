@@ -24,6 +24,7 @@ module.exports = React.createClass({
               <a href="#">Page 3</a>
             </li>
           </ul>
+          {this.props.children}
         </div>
       </nav>
     );

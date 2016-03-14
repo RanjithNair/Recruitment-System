@@ -1,13 +1,15 @@
 var React = require('react');
 var LinkedinCard = require('./linkedin_card.jsx');
+var Uploads = require('./uploads.jsx');
 var Header = require('./Header.jsx');
+var Dummy = require('./dummy.jsx');
+var GithubCard = require('./github_card.jsx');
+var AdminCard = require('./adminview.jsx');
+import {Router, Route, Link, browserHistory} from 'react-router'
 
-module.exports =  React.createClass({
+module.exports = React.createClass({
   callApi: function() {
-    $.ajax({
-      url: 'http://localhost:3001/secured/ping',
-      method: 'GET'
-    }).then(function(data, textStatus, jqXHR) {
+    $.ajax({url: 'http://localhost:3001/secured/ping', method: 'GET'}).then(function(data, textStatus, jqXHR) {
       alert("The request to the secured enpoint was successfull");
     }, function() {
       alert("You need to download the server seed and start it to call this API");
@@ -15,13 +17,11 @@ module.exports =  React.createClass({
   },
 
   getInitialState: function() {
-    return {
-      profile: null
-    }
+    return {profile: null, showGithubInfo: false, githubid: ''}
   },
 
   componentDidMount: function() {
-    this.props.lock.getProfile(this.props.idToken, function (err, profile) {
+    this.props.lock.getProfile(this.props.idToken, function(err, profile) {
       if (err) {
         console.log("Error loading the Profile", err);
         alert("Error loading the Profile");
@@ -29,23 +29,64 @@ module.exports =  React.createClass({
       this.setState({profile: profile});
     }.bind(this));
   },
+  showGithubCard: function() {
+    this.setState({showGithubInfo: true})
+  },
+  handleTextChange: function(e) {
+    this.setState({githubid: e.target.value});
+  },
+
+  grabAllCardsData: function() {
+    console.log('data is' + this.refs.uploadsection.state.resumefile);
+    fetch('http://localhost:3000/api/savecandidatedata', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body : JSON.stringify({
+        linkedin: this.state.profile, githubprofile: this.refs.githubcard.state.profile, githubrepo: this.refs.githubcard.state.repos, codingfile: this.refs.uploadsection.state.codingfile, resumefile: this.refs.uploadsection.resumefile
+      })
+    })
+
+  },
 
   render: function() {
     if (this.state.profile) {
-      return (
-        <div className="logged-in-box auth0-box logged-in">
-          <Header />
-          <h1 id="logo">NMC Recruitment System</h1>
-          <img src={this.state.profile.picture} />
-          <h2>Welcome {this.state.profile.nickname}</h2>
-          <button onClick={this.callApi} className="btn btn-lg btn-primary">Start Process</button>
-          <LinkedinCard profiledata={this.state.profile} />
-        </div>);
+      if(this.state.profile.roles != null && this.state.profile.roles[0] == 'admin') {
+        return(
+        <AdminCard />
+        );
+      }
+      else {
+        return (
+          <div className="container-fluid">
+            <div className="row">
+              <LinkedinCard profiledata={this.state.profile}/>
+              <Uploads ref="uploadsection"/>
+            </div>
+            <div className="row">
+              <div class="form-group">
+                <input type="text" value={this.state.githubid} onChange={this.handleTextChange} placeholder="Enter Github ID"></input>
+                <button type="button" class="btn btn-default" onClick={this.showGithubCard}>Import</button>
+              </div>
+              {this.state.showGithubInfo
+                ? <GithubCard ref="githubcard" username={this.state.githubid}/>
+                : null}
+            </div>
+            <div className="row">
+              <button type="button" class="btn btn-default" onClick={this.grabAllCardsData}>Grab Data</button>
+            </div>
+          </div>
+        );
+      }
+
     } else {
       return (
         <div className="logged-in-box auth0-box logged-in">
-          <h1 id="logo"><img src="https://cdn.auth0.com/blog/auth0_logo_final_blue_RGB.png" /></h1>
-        </div>);
+          <h1 id="logo"><img src="https://cdn.auth0.com/blog/auth0_logo_final_blue_RGB.png"/></h1>
+        </div>
+      );
     }
   }
 });
