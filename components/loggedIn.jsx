@@ -45,7 +45,7 @@ module.exports = React.createClass({
         'Content-Type': 'application/json'
       },
       body : JSON.stringify({
-        linkedin: this.state.profile, githubprofile: this.refs.githubcard.state.profile, githubrepo: this.refs.githubcard.state.repos, codingfile: this.refs.uploadsection.state.codingfile, resumefile: this.refs.uploadsection.resumefile
+        linkedin: this.state.profile, githubprofile: this.refs.githubcard.state.profile, githubrepo: this.refs.githubcard.state.repos, codingfile: this.refs.uploadsection.state.codingfile, resumefile: this.refs.uploadsection.state.resumefile
       })
     })
 
