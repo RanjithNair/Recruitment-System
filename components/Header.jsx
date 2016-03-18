@@ -24,6 +24,9 @@ module.exports = React.createClass({
               <a href="#">Page 3</a>
             </li>
           </ul>
+          <ul className="nav navbar-nav navbar-right">
+          <li><a href="#"><span className="glyphicon glyphicon-user"></span> {this.props.username}</a></li>
+        </ul>
           {this.props.children}
         </div>
       </nav>

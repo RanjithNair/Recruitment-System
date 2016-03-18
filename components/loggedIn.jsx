@@ -5,6 +5,7 @@ var Header = require('./Header.jsx');
 var Dummy = require('./dummy.jsx');
 var GithubCard = require('./github_card.jsx');
 var AdminCard = require('./adminview.jsx');
+var GithubSearch = require('./github-search.jsx');
 import {Router, Route, Link, browserHistory} from 'react-router'
 
 module.exports = React.createClass({
@@ -61,18 +62,15 @@ module.exports = React.createClass({
       else {
         return (
           <div className="container-fluid">
+            <Header username={this.state.profile.name}/>
             <div className="row">
               <LinkedinCard profiledata={this.state.profile}/>
               <Uploads ref="uploadsection"/>
             </div>
             <div className="row">
               <div class="form-group">
-                <input type="text" value={this.state.githubid} onChange={this.handleTextChange} placeholder="Enter Github ID"></input>
-                <button type="button" class="btn btn-default" onClick={this.showGithubCard}>Import</button>
+                <GithubSearch />
               </div>
-              {this.state.showGithubInfo
-                ? <GithubCard ref="githubcard" username={this.state.githubid}/>
-                : null}
             </div>
             <div className="row">
               <button type="button" class="btn btn-default" onClick={this.grabAllCardsData}>Grab Data</button>

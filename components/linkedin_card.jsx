@@ -14,7 +14,11 @@ module.exports = React.createClass({
   render: function() {
     return (
       <div className="col-md-7 linkedin-profile">
-        <div className="row header-image"></div>
+        <div className="row header-image">
+          <div className="col-md-12 image-section">
+            <img className="img-circle" src="https://media.licdn.com/mpr/mprx/0_imOA6Rg6sDN9kbsMSEZC6M2BswisXTIMTWom6ZaQ5mcERLpJ7eaje4seNL_5bQovGSpfd0y6Ceis" alt="Chania"></img>
+          </div>
+        </div>
 
         <div className="row header-title">
           <div className="col-md-12">

@@ -5,14 +5,14 @@ module.exports = React.createClass({
   showLock: function() {
     this.props.lock.show();
   },
-
   render: function() {
     return (
-    <div className="login-box auth0-box before">
-      <img src="https://i.cloudup.com/StzWWrY34s.png" />
-      <h3>Infy NMC Recruitment System</h3>
-      <a onClick={this.showLock} className="btn btn-primary btn-lg btn-login btn-block">Sign In</a>
-      <button type="button" class="btn btn-default" onClick={this.showGithubCard}>Admin Signin</button>
-    </div>);
+      <div className="login">
+        <div className="heading">
+          <h1 className="title-heading home-title">Infosys Recruitment System</h1>
+          <button className="float" onClick={this.showLock}>Login</button>
+        </div>
+      </div>
+    );
   }
 });
