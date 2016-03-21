@@ -18,7 +18,7 @@ module.exports = React.createClass({
   },
 
   showGithubCard: function() {
-    this.setState({showGithubCard: true});
+    this.setState({showGithubCard : true});
     this._getGithubData();
   },
 
@@ -40,7 +40,7 @@ module.exports = React.createClass({
 
   _showRepos: function() {
     this.setState({
-      showRepoInfo: true
+      showRepoInfo: this.state.showRepoInfo ? false : true
     })
   },
 
@@ -119,35 +119,31 @@ module.exports = React.createClass({
 
           <div className="row">
             <div className="col-md-12 collapsible-repo">
-              <div className="panel-group">
-                <div className="panel panel-default">
-                  <div className="panel-heading repo-heading">
-                    <h2 className="panel-title">
-                      <a data-toggle="collapse" href="#" onClick={this._showRepos}>
-                        <h3>{this.state.profile.public_repos} Repositories</h3>
-                      </a>
-                    </h2>
-                  </div>
-
-                  {this.state.showRepoInfo
-                    ? <RepoInfo repos={this.state.repos}/>
-                    : null}
-                </div>
+              <div className="repo-heading" onClick={this._showRepos}>
+                <h3>{this.state.profile.public_repos} Repositories</h3>
               </div>
+              {this.state.showRepoInfo
+                ? <RepoInfo repos={this.state.repos}/>
+                : null}
+
+
+
             </div>
           </div>
         </div>
       );
     } else {
       return (
-        <div className="group col-md-7">
+        <div>
+        <div className="col-md-2">
           <input type="text" required className="material" value={this.state.githubid} onChange={this.handleTextChange}></input>
           <span className="highlight"></span>
           <span className="bar"></span>
           <label>Enter Github ID</label>
-
-
-            <button className="btn" type="button"><span>Button</span></button>
+        </div>
+        <div className="col-md-3">
+          <button className="btn show-github" type="button" onClick={this.showGithubCard}><span>Import</span></button>
+        </div>
         </div>
       );
     }

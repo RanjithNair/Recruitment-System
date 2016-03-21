@@ -69,11 +69,31 @@ module.exports = React.createClass({
             </div>
             <div className="row">
               <div class="form-group">
-                <GithubSearch />
+                <GithubSearch ref="githubcard"/>
               </div>
             </div>
             <div className="row">
-              <button type="button" class="btn btn-default" onClick={this.grabAllCardsData}>Grab Data</button>
+              <div className="col-md-12 submit-row">
+              <button data-toggle="modal" data-target="#myModal" className="btn submit-profile" type="button" ><span>Submit</span></button>
+                <div id="myModal" className="modal fade" role="dialog">
+                  <div className="modal-dialog">
+
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <button type="button" className="close" data-dismiss="modal">&times;</button>
+                        <h4 className="modal-title">Modal Header</h4>
+                      </div>
+                      <div className="modal-body">
+                        <p>Some text in the modal.</p>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -86,5 +106,6 @@ module.exports = React.createClass({
         </div>
       );
     }
+    this.showTour();
   }
 });

@@ -45,9 +45,8 @@ module.exports = React.createClass({
         </div>
         <div className="row">
           <div className="col-md-12 footer-info">
-            <h3>{this.state.profile.numConnections}
-              Connections. Visit profile
-              <a href={this.state.profile.publicProfileUrl}>here.</a>
+            <h3>{this.state.profile.numConnections} Connections. Visit profile
+              <a href={this.state.profile.publicProfileUrl}> here.</a>
             </h3>
           </div>
         </div>

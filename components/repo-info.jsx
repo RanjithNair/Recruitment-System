@@ -10,14 +10,10 @@ module.exports = React.createClass({
     if(this.props.repos != null) {
       repos = this.props.repos.map(function(repo) {
         return (
-          <li className="list-group-item">
-            <span className="list-title">
-              <a href={repo.html_url}>{repo.name}</a>
-            </span>
-            <span className="title-desc">
-              {repo.description}
-            </span>
-          </li>
+          <a href={repo.html_url} className="list-group-item">
+            <h4 className="list-group-item-heading">{repo.name}</h4>
+            <p className="list-group-item-text">{repo.description}</p>
+          </a>
         );
       });
     }
@@ -26,10 +22,8 @@ module.exports = React.createClass({
 
 
     return(
-      <div id="collapse1" className="">
-        <ul className="list-group">
+      <div id="collapse1" className="list-group">
           {repos}
-        </ul>
       </div>
 );
 

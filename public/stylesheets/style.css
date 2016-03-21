@@ -56,6 +56,9 @@ h2.sub-title-heading {
   background-color: darkkhaki !important;
   font-family: 'Oswald', sans-serif;
   text-align: center;
+  height: 100%;
+  overflow: auto;
+  cursor: pointer;
 }
 span.list-title {
   display: block;
@@ -225,7 +228,7 @@ input:focus ~ .highlight {
 }
 .btn {
   position: relative;
-
+  float: left;
   display: block;
   margin: 5px auto;
   padding: 0;
@@ -283,4 +286,11 @@ input:focus ~ .highlight {
   padding-top: 120%;
 
   transition: width .2s ease-out, padding-top .2s ease-out;
+}
+button.submit-profile {
+  float: none!important;
+}
+div.submit-row {
+  background-color: darkkhaki;
+  margin-top: 80px;
 }
