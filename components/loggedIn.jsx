@@ -6,7 +6,9 @@ var Dummy = require('./dummy.jsx');
 var GithubCard = require('./github_card.jsx');
 var AdminCard = require('./adminview.jsx');
 var GithubSearch = require('./github-search.jsx');
+var Modal = require('./modal.jsx');
 import {Router, Route, Link, browserHistory} from 'react-router'
+var Alert = require('./alerts.jsx');
 
 module.exports = React.createClass({
   callApi: function() {
@@ -18,7 +20,7 @@ module.exports = React.createClass({
   },
 
   getInitialState: function() {
-    return {profile: null, showGithubInfo: false, githubid: ''}
+    return {profile: null, showGithubInfo: false, githubid: '', isModalVisible: false, saveSuccessful: 0}
   },
 
   componentDidMount: function() {
@@ -39,6 +41,7 @@ module.exports = React.createClass({
 
   grabAllCardsData: function() {
     console.log('data is' + this.refs.uploadsection.state.resumefile);
+    var self = this;
     fetch('http://localhost:3000/api/savecandidatedata', {
       method: 'POST',
       headers: {
@@ -48,8 +51,42 @@ module.exports = React.createClass({
       body : JSON.stringify({
         linkedin: this.state.profile, githubprofile: this.refs.githubcard.state.profile, githubrepo: this.refs.githubcard.state.repos, codingfile: this.refs.uploadsection.state.codingfile, resumefile: this.refs.uploadsection.state.resumefile
       })
-    })
+    }).then(function(response) {
+      if(!response.ok) {
+        console.log("Error: " + response.statusText);
+        self.setState({ saveSuccessful: 2});
+      }
+      self.setState({ saveSuccessful: 1});
+    }).catch(function() {
+      console.log("error");
+      self.setState({ saveSuccessful: 2});
+    });
 
+  },
+
+  showModal: function() {
+    this.setState({
+      isModalVisible: true
+    })
+  },
+
+  submitProfile: function() {
+    this.setState({
+      isModalVisible: false
+    });
+    this.grabAllCardsData();
+  },
+
+  cancel: function() {
+    this.setState({
+      isModalVisible: false
+    });
+  },
+
+  callbackAlert: function() {
+    this.setState({
+      saveSuccessful: 0
+    });
   },
 
   render: function() {
@@ -63,6 +100,8 @@ module.exports = React.createClass({
         return (
           <div className="container-fluid">
             <Header username={this.state.profile.name}/>
+              {this.state.saveSuccessful == 1 ? <Alert status="success" text="Save Successful !" onDismissal={this.callbackAlert}/> : null}
+              {this.state.saveSuccessful == 2 ? <Alert status="danger" text="Save failed !" onDismissal={this.callbackAlert} /> : null}
             <div className="row">
               <LinkedinCard profiledata={this.state.profile}/>
               <Uploads ref="uploadsection"/>
@@ -74,25 +113,10 @@ module.exports = React.createClass({
             </div>
             <div className="row">
               <div className="col-md-12 submit-row">
-              <button data-toggle="modal" data-target="#myModal" className="btn submit-profile" type="button" ><span>Submit</span></button>
-                <div id="myModal" className="modal fade" role="dialog">
-                  <div className="modal-dialog">
+              <button className="btn submit-profile" type="button" onClick={this.showModal}><span>Submit</span></button>
+              {this.state.isModalVisible ? <Modal onConfirm={this.submitProfile} onCancel={this.cancel}/> : null}
 
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <button type="button" className="close" data-dismiss="modal">&times;</button>
-                        <h4 className="modal-title">Modal Header</h4>
-                      </div>
-                      <div className="modal-body">
-                        <p>Some text in the modal.</p>
-                      </div>
-                      <div className="modal-footer">
-                        <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                      </div>
-                    </div>
 
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -106,6 +130,5 @@ module.exports = React.createClass({
         </div>
       );
     }
-    this.showTour();
   }
 });
