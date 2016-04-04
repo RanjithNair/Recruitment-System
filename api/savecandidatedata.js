@@ -5,6 +5,29 @@ var mongodb = require('mongodb');
 //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
 
+router.post('/updateInterviewerData', function(req, res, next) {
+  var url = 'mongodb://admin:infosys123@ds011419.mlab.com:11419/infyrecruitment';
+
+  // Use connect method to connect to the Server
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+      db.collection('users').updateOne(
+        { "username" : req.body.username},
+        {
+          $set: { "interviewer" : req.body.interviewer}
+        }, function(err, results) {
+          if(err) {
+            console.log(err);
+          }
+          console.log("Successfully updated");
+          res.status(200).json(results);
+        });
+    }
+  });
+});
+
 router.get('/getcandidatedata', function(req, res, next) {
   var url = 'mongodb://admin:infosys123@ds011419.mlab.com:11419/infyrecruitment';
 
@@ -57,7 +80,6 @@ router.post('/savecandidatedata', function(req, res, next) {
     } else {
       //HURRAY!! We are connected. :)
       console.log('Connection established to', url);
-      console.log(req.body.githubprofile);
       // do some work here with the database.
       var collection = db.collection('users');
 
@@ -70,12 +92,14 @@ router.post('/savecandidatedata', function(req, res, next) {
         resumefile: req.body.resumefile
       };
       collection.insert(user, function(err, result) {
+        db.close();
         if (err) {
           console.log(err);
         } else {
           console.log("successfully inserted into db");
+          res.status(200).json(user);
         }
-        db.close();
+
       });
 
       //Close connection

@@ -7,17 +7,11 @@ var GithubCard = require('./github_card.jsx');
 var AdminCard = require('./adminview.jsx');
 var GithubSearch = require('./github-search.jsx');
 var Modal = require('./modal.jsx');
+var Interviewer = require('./interviewer.jsx');
 import {Router, Route, Link, browserHistory} from 'react-router'
 var Alert = require('./alerts.jsx');
 
 module.exports = React.createClass({
-  callApi: function() {
-    $.ajax({url: 'http://localhost:3001/secured/ping', method: 'GET'}).then(function(data, textStatus, jqXHR) {
-      alert("The request to the secured enpoint was successfull");
-    }, function() {
-      alert("You need to download the server seed and start it to call this API");
-    });
-  },
 
   getInitialState: function() {
     return {profile: null, showGithubInfo: false, githubid: '', isModalVisible: false, saveSuccessful: 0}
@@ -91,12 +85,24 @@ module.exports = React.createClass({
 
   render: function() {
     if (this.state.profile) {
-      if(this.state.profile.roles != null && this.state.profile.roles[0] == 'admin') {
-        return(
-        <AdminCard />
-        );
+      if(this.state.profile.user_metadata.roles != null) {
+        if(this.state.profile.user_metadata.roles[0] == 'admin') {
+          return(
+            <div className="container-fluid">
+              <Header username={this.state.profile.name}/>
+              <AdminCard />
+            </div>
+          );
+        }
+        if(this.state.profile.user_metadata.roles[0] == 'interviewer') {
+          return(
+            <div className="container-fluid">
+              <Header username={this.state.profile.name}/>
+              <Interviewer />
+            </div>
+          );
+        }
       }
-      else {
         return (
           <div className="container-fluid">
             <Header username={this.state.profile.name}/>
@@ -107,7 +113,7 @@ module.exports = React.createClass({
               <Uploads ref="uploadsection"/>
             </div>
             <div className="row">
-              <div class="form-group">
+              <div className="form-group">
                 <GithubSearch ref="githubcard"/>
               </div>
             </div>
@@ -115,14 +121,10 @@ module.exports = React.createClass({
               <div className="col-md-12 submit-row">
               <button className="btn submit-profile" type="button" onClick={this.showModal}><span>Submit</span></button>
               {this.state.isModalVisible ? <Modal onConfirm={this.submitProfile} onCancel={this.cancel}/> : null}
-
-
               </div>
             </div>
           </div>
         );
-      }
-
     } else {
       return (
         <div className="logged-in-box auth0-box logged-in">

@@ -10,8 +10,22 @@ var management = new ManagementClient({
 });
 
 router.get('/tests', function(req, res, next) {
-  management.users.getAll(function (err, users) {
+  management.users.getAll(function(err, users) {
     console.log(users.length);
- })
-})
+  })
+});
+
+router.get('/interviewers', function(req, res, next) {
+  var interviewerNameList = [];
+  management.users.getAll(function(err, users) {
+    if (users != null) {
+      for (var ctr = 0; ctr < users.length; ctr++) {
+        if (users[ctr].user_metadata != null && users[ctr].user_metadata.roles != null && users[ctr].user_metadata.roles[0] == 'interviewer') {
+          interviewerNameList.push(users[ctr]);
+        }
+      }
+      res.status(200).json(interviewerNameList);
+    }
+  });
+});
 module.exports = router;
