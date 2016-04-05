@@ -69,6 +69,26 @@ router.get('/getcandidatedata/:id', function(req, res, next) {
 
 });
 
+router.get('/getcandidatedataByName/:username', function(req, res, next) {
+  var url = 'mongodb://admin:infosys123@ds011419.mlab.com:11419/infyrecruitment';
+  var username = req.params.username;
+  // Use connect method to connect to the Server
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+      var collection = db.collection('users', function(err, collection) {
+        collection.findOne({
+          'username': username
+        }, function(err, docs) {
+          res.json(docs);
+        });
+      });
+    }
+  });
+
+});
+
 
 router.post('/savecandidatedata', function(req, res, next) {
   var url = 'mongodb://admin:infosys123@ds011419.mlab.com:11419/infyrecruitment';

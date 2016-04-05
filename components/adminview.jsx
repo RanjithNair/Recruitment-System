@@ -19,13 +19,19 @@ module.exports = React.createClass({
   },
 
   renderItems: function() {
+
+  },
+
+  render: function() {
+
     var self = this;
+
     if(this.state.candidateList != null && this.state.interviewerList != null) {
-      return (
-          this.state.candidateList.map(function(candidate) {
-            < InterviewerListItem name = {candidate.username} interviewerList = {this.state.interviewerList} />
-          })
-      );
+      var listitem = this.state.candidateList.map(function(candidate,index) {
+        return (
+            <InterviewerListItem name = {candidate.username} interviewerList = {self.state.interviewerList} index={index}/>
+        );
+      });
     }
     else {
       return(
@@ -34,13 +40,18 @@ module.exports = React.createClass({
         </tr>
       );
     }
-  },
 
-  render: function() {
     return (
-      <table>
+      <table className="table table-bordered admin-table">
+        <thead>
+          <tr>
+            <th>Candidate</th>
+            <th>Interviewer</th>
+            <th></th>
+          </tr>
+        </thead>
         <tbody>
-          {this.renderItems()}
+          {listitem}
         </tbody>
       </table>
     );

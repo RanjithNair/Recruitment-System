@@ -4,10 +4,15 @@ var React = require('react');
 module.exports = React.createClass({
 
   getInitialState: function() {
-    return {profile: {}}
+    return {profile: this.props.profiledata}
   },
 
   componentDidMount: function() {
+    this.setState({profile: this.props.profiledata});
+  },
+
+
+  componentWillReceiveProps: function() {
     this.setState({profile: this.props.profiledata});
   },
 

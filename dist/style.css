@@ -294,3 +294,10 @@ div.submit-row {
   background-color: darkkhaki;
   bottom: 0;
 }
+table.admin-table th {
+  background-color: #4CAF50;
+  color: white;
+}
+table.admin-table td:first-child {
+  color: white;
+}
