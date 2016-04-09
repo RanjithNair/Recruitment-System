@@ -298,6 +298,6 @@ table.admin-table th {
   background-color: #4CAF50;
   color: white;
 }
-table.admin-table td:first-child {
+table.admin-table td:nth-child(2n+1) {
   color: white;
 }

@@ -20,12 +20,9 @@ module.exports = React.createClass({
     }).then(function(response) {
       if(!response.ok) {
         console.log("Error: " + response.statusText);
-        //self.setState({ saveSuccessful: 2});
       }
-      //self.setState({ saveSuccessful: 1});
     }).catch(function() {
       console.log("error");
-      //self.setState({ saveSuccessful: 2});
     });
 
   },
@@ -44,6 +41,9 @@ module.exports = React.createClass({
           <select ref="selintvw">
             {selItems}
           </select>
+        </td>
+        <td>
+          {this.props.status}
         </td>
         <td>
           <button className="btn submit-profile" type="button" onClick={this.saveInterviewer.bind(this,this.props.index)}><span>Save</span></button>

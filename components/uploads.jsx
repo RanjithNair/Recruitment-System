@@ -37,7 +37,7 @@ module.exports = React.createClass({
     };
 
     this.setState({
-      resumefile: reader.readAsBinaryString(file)
+      resumefile: escape(reader.readAsDataURL(file))
     });
 
   },

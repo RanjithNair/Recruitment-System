@@ -29,7 +29,7 @@ module.exports = React.createClass({
     if(this.state.candidateList != null && this.state.interviewerList != null) {
       var listitem = this.state.candidateList.map(function(candidate,index) {
         return (
-            <InterviewerListItem name = {candidate.username} interviewerList = {self.state.interviewerList} index={index}/>
+            <InterviewerListItem name = {candidate.username} status = {candidate.result} interviewerList = {self.state.interviewerList} index={index}/>
         );
       });
     }
@@ -47,6 +47,7 @@ module.exports = React.createClass({
           <tr>
             <th>Candidate</th>
             <th>Interviewer</th>
+            <th>Status</th>
             <th></th>
           </tr>
         </thead>

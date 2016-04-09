@@ -85,7 +85,7 @@ module.exports = React.createClass({
 
   render: function() {
     if (this.state.profile) {
-      if(this.state.profile.user_metadata.roles != null) {
+      if(this.state.profile.user_metadata != null && this.state.profile.user_metadata.roles != null) {
         if(this.state.profile.user_metadata.roles[0] == 'admin') {
           return(
             <div className="container-fluid">

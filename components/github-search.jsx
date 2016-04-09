@@ -13,6 +13,17 @@ module.exports = React.createClass({
     }
   },
 
+  componentDidMount: function() {
+    if(this.props.profiledata != null) {
+      this.setState({showGithubCard : true});
+      this.setState({profile: this.props.profiledata});
+      this.setState({
+        showRepoInfo: true
+      });
+      this.setState({repos: this.props.githubrepo});
+    }
+  },
+
   handleTextChange: function(e) {
     this.setState({githubid: e.target.value});
   },
@@ -48,7 +59,7 @@ module.exports = React.createClass({
   render: function() {
     if (this.state.showGithubCard) {
       return (
-        <div className="col-md-7 github-section">
+        <div className= {this.props.isInterviewer ? "col-md-12 github-section" : "col-md-7 github-section"}>
           <div className="row github-header-row">
             <div className="col-md-2 image-section">
               <img className="img-rounded github-image" src={this.state.profile.avatar_url} alt="Chania"></img>

@@ -1,9 +1,43 @@
 var express = require('express');
 var router = express.Router();
 var mongodb = require('mongodb');
+var request = require('request');
 
 //We need to work with "MongoClient" interface in order to connect to a mongodb server.
 var MongoClient = mongodb.MongoClient;
+
+router.get('/getCompanyData/:name', function(req, res, next) {
+  request('http://api.glassdoor.com/api/api.htm?v=1&format=json&t.p=60155&t.k=c8d4VBzJ7r1&action=employers&q=infosys', function(err, response, body) {
+    if(err) {
+      console.log(err);
+    }
+    res.json(JSON.parse(body));
+  });
+});
+
+router.post('/updateResult', function(req, res, next) {
+  console.log(req.body.username + req.body.comments + req.body.result);
+  var url = 'mongodb://admin:infosys123@ds011419.mlab.com:11419/infyrecruitment';
+
+  // Use connect method to connect to the Server
+  MongoClient.connect(url, function(err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongoDB server. Error:', err);
+    } else {
+      db.collection('users').updateOne(
+        { "username" : req.body.username},
+        {
+          $set: { "comments" : req.body.comments, "result" : req.body.result}
+        }, function(err, results) {
+          if(err) {
+            console.log(err);
+          }
+          console.log("Successfully updated");
+          res.status(200).json(results);
+        });
+    }
+  });
+});
 
 router.post('/updateInterviewerData', function(req, res, next) {
   var url = 'mongodb://admin:infosys123@ds011419.mlab.com:11419/infyrecruitment';
@@ -38,7 +72,8 @@ router.get('/getcandidatedata', function(req, res, next) {
     } else {
       var collection = db.collection('users', function(err, collection) {
         collection.find({}, {
-          "username": 1
+          "username": 1,
+          "result" : 1
         }).toArray(function(err, items) {
           res.json(items);
         });
